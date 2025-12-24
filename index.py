@@ -21,6 +21,7 @@ class Snake:
 
 
     def move(self):
+        print(self.direction)
         head_x, head_y = self.body[0]
         dx,dy = self.direction
         self.body.insert(0,(head_x+dx,head_y+dy))
@@ -32,7 +33,7 @@ class Snake:
         pass
 
     def change_direction(self, new_direction):
-        pass
+        self.direction = new_direction
 
     def draw(self, screen):
         for i in self.body:
@@ -61,7 +62,17 @@ class Game:
        self.snake = Snake()
 
     def handle_events(self):
-       pass
+       events = pygame.event.get()
+       for e in events:
+            if e.type == pygame.QUIT:
+               self.running = False
+            if e.type == pygame.KEYDOWN:
+                key = pygame.key.name(e.key)
+                if key == "w":
+                    self.snake.change_direction((0,-BLOCK_SIZE))
+                if key == "s":
+                    self.snake.change_direction((0,BLOCK_SIZE))
+                
 
     def check_collision(self):
        pass
@@ -81,7 +92,7 @@ class Game:
         while self.running:
            self.clock.tick(FPS)
            self.draw()
-           
+           self.handle_events()
            self.update()
            
 
